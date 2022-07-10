@@ -6,7 +6,7 @@
         <div>{{ user.name }}</div>
       </v-sheet>
       <v-list subheader>
-        <v-subheader>Recent chat</v-subheader>
+        <v-subheader>Users list: </v-subheader>
 
         <v-list-item v-for="user in users" :key="user.id">
           <!-- <v-list-item-avatar>
@@ -26,7 +26,7 @@
 
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-btn>
+      <v-btn @click="exit">
         <v-icon>mdi-arrow-left-bold-circle-outline</v-icon>
       </v-btn>
       <v-toolbar-title> Chat room: {{ user.room }}</v-toolbar-title>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 export default {
   data: () => ({
     drawer: true,
@@ -52,5 +52,12 @@ export default {
     ],
   }),
   computed: mapState(["user"]),
+  methods: {
+    ...mapMutations(["clearData"]),
+    exit() {
+      this.$router.push("/?message=leftChat");
+      this.clearData();
+    },
+  },
 };
 </script>
