@@ -10,7 +10,9 @@
           owner
         />
       </div>
-      <div class="c-form"></div>
+      <div class="c-form">
+        <InputField />
+      </div>
     </div>
   </v-app>
 </template>
@@ -18,6 +20,7 @@
 <script>
 import { mapMutations, mapState } from "vuex";
 import MessageVue from "../components/Message.vue";
+import InputField from "../components/InputField.vue";
 export default {
   data: () => ({
     socketa: "",
@@ -34,7 +37,7 @@ export default {
       console.log(this.$socket);
     },
   },
-  components: { MessageVue },
+  components: { MessageVue, InputField },
   methods: {
     ...mapMutations(["newMessage"]),
   },

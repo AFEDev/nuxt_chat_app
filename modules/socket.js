@@ -23,6 +23,7 @@ export default function () {
         socket.join(data.room);
         cb({ userId: socket.id });
         socket.emit("newMessage", m("admin", `Welcome, ${data.name}.`));
+        socket.emit("newMessage", m("TEST", `Welcome`));
         socket.broadcast
           .to(data.room)
           .emit("newMessage", m("admin", `${data.name} connected to chat.`));
@@ -32,7 +33,7 @@ export default function () {
         setTimeout(() => {
           socket.emit("newMessage", {
             text: data.text + " SERVER",
-            time: new Date().toString().slice(15, 24),
+            time: data.time,
           });
         }, 500);
       });
