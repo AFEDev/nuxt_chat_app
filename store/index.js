@@ -6,7 +6,6 @@ export const state = () => ({
 export const mutations = {
   setUser(state, user) {
     state.user = user;
-    console.log("store user suveike", user);
   },
   clearData(state) {
     state.user = {};
@@ -14,6 +13,5 @@ export const mutations = {
   },
   newMessage(state, message) {
     state.messages.push(message);
-    console.log("message from store", message);
   },
 };

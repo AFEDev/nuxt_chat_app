@@ -64,13 +64,12 @@ export default {
   methods: {
     ...mapMutations(["setUser", "newMessage"]),
     submit() {
-      console.log("INDEX MYGTUKAS VEIKIA");
       if (this.$refs.form.validate()) {
         const user = {
           name: this.name,
           room: this.room,
+          time: new Date().toString().slice(15, 24),
         };
-        console.log(user);
         this.$socket.emit("joinRoom", user, (data) => {
           if (typeof data === "string") {
             console.error(data);
@@ -78,7 +77,6 @@ export default {
             user.id = data.userId;
             this.setUser(user);
             this.$router.push("/chat");
-            console.log("index.vue", data);
           }
         });
         this.$socket.on("newMessage", (data) => {

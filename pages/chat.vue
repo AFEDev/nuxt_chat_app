@@ -1,23 +1,26 @@
 <template>
-  <div class="c-wrap">
-    <div class="c-chat">
-      <li v-for="message in messages" :key="message.text">
-        {{ message.text }}
-      </li>
+  <v-app>
+    <div class="c-wrap">
+      <div class="c-chat">
+        <MessageVue
+          v-for="message in messages"
+          :key="message.text"
+          :name="message.name"
+          :text="message.text"
+          owner
+        />
+      </div>
+      <div class="c-form"></div>
     </div>
-
-    <div class="c-form">
-      <ChatForm />
-    </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
 import { mapMutations, mapState } from "vuex";
+import MessageVue from "../components/Message.vue";
 export default {
   data: () => ({
-    socketas: "",
-    cal: "",
+    socketa: "",
   }),
   middleware: ["chat"],
   head() {
@@ -29,22 +32,9 @@ export default {
     ...mapState(["user", "messages"]),
     socket() {
       console.log(this.$socket);
-
-      this.$socket.on("error", (error) => {
-        console.log("chat.vue errer", error);
-      });
-
-      this.$socket.on("newMessage", (data) => {
-        console.log("message chat", data);
-      });
-      // console.log("chat socketas suveikineja?", this.$socket);
-      // this.$socket.on("userJoined", (cb) => {
-      //   console.log("chat socket", this.socket);
-      //   console.log("cb is puslapio index.vue", cb);
-      //   this.cal = cb;
-      // });
     },
   },
+  components: { MessageVue },
   methods: {
     ...mapMutations(["newMessage"]),
   },

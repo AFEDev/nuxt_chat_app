@@ -12,13 +12,13 @@ export default function () {
       );
     this.nuxt.hook("close", () => new Promise(server.close));
 
-    const m = (name, text, id) => ({ name, text, id });
+    const m = (name, text, id, time) => ({ name, text, id, time });
 
     io.on("connection", (socket) => {
       socket.on("joinRoom", (data, cb) => {
         console.log("SERVERIS VEIKIA");
         if (!data.name || !data.room) {
-          cb("Данные некорректны");
+          cb("Incorrect data");
         }
         socket.join(data.room);
         cb({ userId: socket.id });
@@ -32,6 +32,7 @@ export default function () {
         setTimeout(() => {
           socket.emit("newMessage", {
             text: data.text + " SERVER",
+            time: new Date().toString().slice(15, 24),
           });
         }, 500);
       });
