@@ -12,17 +12,28 @@ export default function () {
       );
     this.nuxt.hook("close", () => new Promise(server.close));
 
+    const m = (name, text, id) => ({ name, text, id });
+
     io.on("connection", (socket) => {
+      socket.on("joinRoom", (data, cb) => {
+        console.log("SERVERIS VEIKIA");
+        if (!data.name || !data.room) {
+          cb("Данные некорректны");
+        }
+        socket.join(data.room);
+        cb({ userId: socket.id });
+        socket.emit("newMessage", m("admin", `Welcome, ${data.name}.`));
+        socket.broadcast
+          .to(data.room)
+          .emit("newMessage", m("admin", `${data.name} connected to chat.`));
+      });
+
       socket.on("createMessage", (data) => {
         setTimeout(() => {
           socket.emit("newMessage", {
             text: data.text + " SERVER",
           });
         }, 500);
-      });
-      socket.on("hello", (arg, callback) => {
-        console.log(arg); // "world"
-        callback("got it");
       });
     });
   });

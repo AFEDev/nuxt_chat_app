@@ -40,11 +40,6 @@
       </v-container>
     </v-main>
   </v-app>
-
-  <!-- <div>
-    <p>Check socket status in Vue devtools... {{ socketas.id }} {{ test }}</p>
-    <v-btn @click="message"> NEW MESSAGE </v-btn>
-  </div> -->
 </template>
 
 <script>
@@ -54,18 +49,7 @@ export default {
     title: "Welcome",
   },
   layout: "empty",
-  computed: {
-    socket() {
-      console.log("USER SIDE CONNECTED");
-      this.$socket.emit("hello", "world", (response) => {
-        console.log(response); // "got it"
-      });
-      return (this.socketas = this.$socket ? this.$socket : { empty });
-    },
-  },
   data: () => ({
-    socketas: "",
-    test: "Testas",
     valid: true,
     name: "",
     nameRules: [
@@ -78,22 +62,29 @@ export default {
   }),
 
   methods: {
-    ...mapMutations(["setUser"]),
+    ...mapMutations(["setUser", "newMessage"]),
     submit() {
+      console.log("INDEX MYGTUKAS VEIKIA");
       if (this.$refs.form.validate()) {
         const user = {
           name: this.name,
           room: this.room,
         };
-        this.setUser(user);
-        this.$router.push("/chat");
+        console.log(user);
+        this.$socket.emit("joinRoom", user, (data) => {
+          if (typeof data === "string") {
+            console.error(data);
+          } else {
+            user.id = data.userId;
+            this.setUser(user);
+            this.$router.push("/chat");
+            console.log("index.vue", data);
+          }
+        });
+        this.$socket.on("newMessage", (data) => {
+          this.newMessage(data);
+        });
       }
-    },
-    message() {
-      console.log("mygtukas veikia");
-      this.$socket.emit("createMessage", {
-        text: "From client ",
-      });
     },
   },
 };

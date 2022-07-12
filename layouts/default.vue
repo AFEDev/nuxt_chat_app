@@ -1,6 +1,6 @@
 <template>
   <v-app app>
-    <v-navigation-drawer app v-model="drawer">
+    <v-navigation-drawer app v-model="drawer" mobile-breakpoint="650">
       <v-sheet color="blue-grey lighten-4" class="pa-1">
         <v-avatar class="mb-4" color="grey darken-1" size="40"></v-avatar>
         <div>{{ user.name }}</div>
@@ -34,7 +34,9 @@
 
     <v-main>
       <v-container class="py-8 px-6" fluid>
-        <Nuxt />
+        <div style="height: 100%">
+          <Nuxt />
+        </div>
       </v-container>
     </v-main>
   </v-app>
@@ -53,7 +55,7 @@ export default {
   }),
   computed: mapState(["user"]),
   methods: {
-    ...mapMutations(["clearData"]),
+    ...mapMutations(["clearData", "newMessage"]),
     exit() {
       this.$router.push("/?message=leftChat");
       this.clearData();
