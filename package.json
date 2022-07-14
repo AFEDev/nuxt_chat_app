@@ -16,6 +16,8 @@
     "socket.io": "^4.5.1",
     "socket.io-client": "^4.5.1",
     "vue": "^2.6.14",
+    "vue-chat-emoji": "^1.1.27",
+    "vue-emoji-picker": "^1.0.3",
     "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.6.14",
     "vuetify": "^2.6.1",

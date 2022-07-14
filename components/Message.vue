@@ -6,10 +6,12 @@
     </div>
     <div v-else class="wrap">
       <div class="message" :class="{ owner }">
-        <p>{{ time }}</p>
-        <small
-          ><strong>{{ name }}</strong></small
-        >
+        <p>
+          <small>
+            <strong> {{ name }}</strong
+            >{{ time }}
+          </small>
+        </p>
         <p>{{ text }}</p>
       </div>
     </div>
@@ -31,9 +33,9 @@ export default {
 </script>
 
 <style scoped>
-.system {
+/* .system {
   margin-bottom: 1rem;
-}
+} */
 p {
   margin-bottom: 0rem;
 }

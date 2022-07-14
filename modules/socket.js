@@ -1,5 +1,6 @@
 import http from "http";
 import socketIO from "socket.io";
+import Users from "../utils/users";
 
 export default function () {
   this.nuxt.hook("render:before", () => {
@@ -13,6 +14,7 @@ export default function () {
     this.nuxt.hook("close", () => new Promise(server.close));
 
     const m = (name, text, id, time) => ({ name, text, id, time });
+    const users = Users();
 
     io.on("connection", (socket) => {
       socket.on("joinRoom", (data, cb) => {
@@ -21,21 +23,61 @@ export default function () {
           cb("Incorrect data");
         }
         socket.join(data.room);
+        //users.remove(socket.id);
+        users.add({
+          id: socket.id,
+          name: data.name,
+          room: data.room,
+        });
         cb({ userId: socket.id });
-        socket.emit("newMessage", m("admin", `Welcome, ${data.name}.`));
-        socket.emit("newMessage", m("TEST", `Welcome`));
+        io.to(data.room).emit("updateUsers", users.getByRoom(data.room));
+        console.log("serveris gavo info?", data);
+        socket.emit(
+          "newMessage",
+          m(
+            "admin",
+            `${new Date().toString().slice(15, 24)}  Welcome, ${data.name}.`
+          )
+        );
         socket.broadcast
           .to(data.room)
           .emit("newMessage", m("admin", `${data.name} connected to chat.`));
       });
 
-      socket.on("createMessage", (data) => {
-        setTimeout(() => {
-          socket.emit("newMessage", {
-            text: data.text + " SERVER",
-            time: data.time,
-          });
-        }, 500);
+      socket.on("createMessage", (data, cb) => {
+        if (!data.text) {
+          return cb("Please enter text");
+        }
+        const user = users.get(data.id);
+        if (user) {
+          io.to(user.room).emit(
+            "newMessage",
+            m(user.name, data.text, data.id, data.time)
+          );
+        }
+        cb();
+      });
+
+      socket.on("userLeft", (id, cb) => {
+        const user = users.remove(id);
+        if (user) {
+          io.to(user.room).emit(
+            "newMessage",
+            m("admin", `User ${user.name} left room`)
+          );
+        }
+        cb();
+      });
+
+      socket.on("disconnect", () => {
+        const user = users.remove(socket.id);
+        if (user) {
+          io.to(user.room).emit("updateUsers", users.getByRoom(user.room));
+          io.to(user.room).emit(
+            "newMessage",
+            m("admin", `User ${user.name} left room`)
+          );
+        }
       });
     });
   });

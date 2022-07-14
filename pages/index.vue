@@ -62,13 +62,12 @@ export default {
   }),
 
   methods: {
-    ...mapMutations(["setUser", "newMessage"]),
+    ...mapMutations(["setUser", "newMessage", "updateUsers"]),
     submit() {
       if (this.$refs.form.validate()) {
         const user = {
           name: this.name,
           room: this.room,
-          time: new Date().toString().slice(15, 24),
         };
         this.$socket.emit("joinRoom", user, (data) => {
           if (typeof data === "string") {
@@ -81,6 +80,9 @@ export default {
         });
         this.$socket.on("newMessage", (data) => {
           this.newMessage(data);
+        });
+        this.$socket.on("updateUsers", (data) => {
+          this.updateUsers(data);
         });
       }
     },

@@ -7,7 +7,8 @@
           :key="message.text"
           :name="message.name"
           :text="message.text"
-          owner
+          :time="message.time"
+          :owner="message.id === user.id"
         />
       </div>
       <div class="c-form">
@@ -18,7 +19,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapState } from "vuex";
 import MessageVue from "../components/Message.vue";
 import InputField from "../components/InputField.vue";
 export default {
@@ -33,14 +34,8 @@ export default {
   },
   computed: {
     ...mapState(["user", "messages"]),
-    socket() {
-      console.log(this.$socket);
-    },
   },
   components: { MessageVue, InputField },
-  methods: {
-    ...mapMutations(["newMessage"]),
-  },
 };
 </script>
 
@@ -49,6 +44,7 @@ export default {
   height: 100%;
   position: relative;
   overflow: hidden;
+  margin-top: 80px;
 }
 
 .c-form {
