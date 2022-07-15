@@ -35,6 +35,13 @@ export default {
   computed: {
     ...mapState(["user", "messages"]),
   },
+  watch: {
+    messages() {
+      setTimeout(() => {
+        this.$refs.block.scrollTop = this.$refs.block.getBoundingClientRect;
+      });
+    },
+  },
   components: { MessageVue, InputField },
 };
 </script>

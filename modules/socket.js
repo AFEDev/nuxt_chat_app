@@ -23,7 +23,7 @@ export default function () {
           cb("Incorrect data");
         }
         socket.join(data.room);
-        //users.remove(socket.id);
+        users.remove(socket.id);
         users.add({
           id: socket.id,
           name: data.name,
@@ -61,9 +61,10 @@ export default function () {
       socket.on("userLeft", (id, cb) => {
         const user = users.remove(id);
         if (user) {
+          io.to(user.room).emit("updateUsers", users.getByRoom(user.room));
           io.to(user.room).emit(
             "newMessage",
-            m("admin", `User ${user.name} left room`)
+            m("admin", `${user.name} left chat`)
           );
         }
         cb();
@@ -75,7 +76,7 @@ export default function () {
           io.to(user.room).emit("updateUsers", users.getByRoom(user.room));
           io.to(user.room).emit(
             "newMessage",
-            m("admin", `User ${user.name} left room`)
+            m("admin", `${user.name} left chat`)
           );
         }
       });

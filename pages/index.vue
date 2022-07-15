@@ -3,6 +3,7 @@
     <v-main>
       <v-container>
         <v-card class="mx-auto" max-width="600" outlined>
+          <snack-bar :snackbar="snanackbar" :text="text" />
           <v-card-title><h2>Nuxt chat 1.0 beta</h2></v-card-title>
           <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation>
@@ -44,12 +45,16 @@
 
 <script>
 import { mapMutations } from "vuex";
+import SnackBar from "../components/SnackBar.vue";
 export default {
+  components: { SnackBar },
   head: {
     title: "Welcome",
   },
   layout: "empty",
   data: () => ({
+    snanackbar: false,
+    text: "",
     valid: true,
     name: "",
     nameRules: [
@@ -60,7 +65,15 @@ export default {
     roomRules: [(v) => !!v || "Enter chat room"],
     checkbox: false,
   }),
-
+  mounted() {
+    const { message } = this.$route.query;
+    if (message === "noUser") {
+      this.text = "Enter name";
+    } else if (message === "leftChat") {
+      this.text = "You left chat room";
+    }
+    this.snanackbar = !!this.text;
+  },
   methods: {
     ...mapMutations(["setUser", "newMessage", "updateUsers"]),
     submit() {
