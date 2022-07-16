@@ -12,8 +12,6 @@ export default function () {
         server.listen(port || 3000, host || "localhost", resolve)
       );
 
-    this.nuxt.hook("close", () => new Promise(server.close));
-
     const m = (name, text, id, time) => ({ name, text, id, time });
     const users = Users();
 
