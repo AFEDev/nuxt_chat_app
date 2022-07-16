@@ -11,6 +11,7 @@ export default function () {
       new Promise((resolve) =>
         server.listen(port || 3000, host || "localhost", resolve)
       );
+
     this.nuxt.hook("close", () => new Promise(server.close));
 
     const m = (name, text, id, time) => ({ name, text, id, time });
@@ -18,7 +19,6 @@ export default function () {
 
     io.on("connection", (socket) => {
       socket.on("joinRoom", (data, cb) => {
-        console.log("SERVERIS VEIKIA");
         if (!data.name || !data.room) {
           cb("Incorrect data");
         }
@@ -31,7 +31,6 @@ export default function () {
         });
         cb({ userId: socket.id });
         io.to(data.room).emit("updateUsers", users.getByRoom(data.room));
-        console.log("serveris gavo info?", data);
         socket.emit(
           "newMessage",
           m(
