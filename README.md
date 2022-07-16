@@ -1,4 +1,4 @@
-# nuxt_test
+# Chat app
 
 ## Build Setup
 
