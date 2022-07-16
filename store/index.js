@@ -15,10 +15,8 @@ export const mutations = {
   },
   newMessage(state, message) {
     state.messages.push(message);
-    console.log("message atejo i store?");
   },
   updateUsers(state, users) {
     state.users = users;
-    console.log("storo useriai:", users);
   },
 };

@@ -1,14 +1,20 @@
 <template>
   <v-app app>
-    <v-navigation-drawer app v-model="drawer" mobile-breakpoint="650">
-      <v-sheet color="blue-grey lighten-4" class="pa-1">
+    <v-navigation-drawer app v-model="drawer" mobile-breakpoint="700">
+      <v-sheet color="blue-grey lighten-1" class="pa-1">
         <!-- <v-avatar class="mb-4" color="grey darken-1" size="40"></v-avatar> -->
         <div>{{ user.name }}</div>
+        <v-switch
+          v-model="$vuetify.theme.dark"
+          inset
+          label="Theme"
+          persistent-hint
+        ></v-switch>
       </v-sheet>
       <v-list subheader>
         <v-subheader>Users list: </v-subheader>
 
-        <v-list-item v-for="u in users" :key="u.id">
+        <v-list-item v-for="u in users" :key="u.id" @click.prevent>
           <!-- <v-list-item-avatar>
             <v-img :alt="`${chat.title} avatar`" :src="chat.avatar"></v-img>
           </v-list-item-avatar> -->
@@ -28,10 +34,12 @@
 
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-btn @click="exit">
-        <v-icon>mdi-arrow-left-bold-circle-outline</v-icon>
-      </v-btn>
       <v-toolbar-title> Chat room: {{ user.room }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+
+      <v-btn @click="exit">
+        <v-icon>mdi-exit-to-app</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-main class="pt-0">

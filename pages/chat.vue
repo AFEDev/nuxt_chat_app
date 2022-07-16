@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <div class="c-wrap">
-      <div class="c-chat">
+      <div ref="block" class="c-chat">
         <MessageVue
-          v-for="message in messages"
-          :key="message.text"
+          v-for="(message, index) in messages"
+          :key="index"
           :name="message.name"
           :text="message.text"
           :time="message.time"
@@ -38,8 +38,10 @@ export default {
   watch: {
     messages() {
       setTimeout(() => {
-        this.$refs.block.scrollTop = this.$refs.block.getBoundingClientRect;
-      });
+        if (this.$refs.block) {
+          this.$refs.block.scrollTop = this.$refs.block.scrollHeight;
+        }
+      }, 0);
     },
   },
   components: { MessageVue, InputField },

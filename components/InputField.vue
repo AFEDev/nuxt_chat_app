@@ -4,12 +4,12 @@
       <v-text-field
         prepend-icon="mdi-emoticon"
         label="Message"
-        clear-icon="mdi-close-circle"
+        append-icon="mdi-send-circle-outline"
         clearable
         outlined
         v-model="text"
         @keydown.enter="send"
-        @click:clear="clearMessage"
+        @click:append="send"
         @click:prepend="pickEmoji = !pickEmoji"
       ></v-text-field>
       <!-- <emoji-picker v-if="pickEmoji" /> -->
@@ -44,9 +44,6 @@ export default {
           }
         }
       );
-    },
-    clearMessage() {
-      this.label = "";
     },
     insert(emoji) {
       this.text += emoji;
