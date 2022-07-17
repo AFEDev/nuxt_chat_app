@@ -3,7 +3,7 @@
     <v-main>
       <v-container>
         <v-card class="mx-auto" max-width="600" outlined>
-          <snack-bar :showModal="showModal" :text="text" />
+          <snack-bar />
           <v-card-title><h2>Nuxt chat 1.0 beta</h2></v-card-title>
           <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation>
@@ -53,8 +53,6 @@ export default {
   },
   layout: "empty",
   data: () => ({
-    showModal: false,
-    text: "",
     valid: true,
     name: "",
     nameRules: [
@@ -65,15 +63,6 @@ export default {
     roomRules: [(v) => !!v || "Enter chat room"],
     checkbox: false,
   }),
-  mounted() {
-    const { message } = this.$route.query;
-    if (message === "noUser") {
-      this.text = "Enter name";
-    } else if (message === "leftChat") {
-      this.text = "You left chat room";
-    }
-    this.showModal = !!this.text;
-  },
   methods: {
     ...mapMutations(["setUser", "newMessage", "updateUsers"]),
     submit() {

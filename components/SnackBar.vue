@@ -1,6 +1,6 @@
 <template>
   <v-snackbar v-model="snackbar">
-    {{ text }}
+    {{ message }}
     <template v-slot:action="{ attrs }">
       <v-btn color="pink" text v-bind="attrs" @click="hideModal"> close </v-btn>
     </template>
@@ -9,18 +9,20 @@
 
 <script>
 export default {
-  props: {
-    text: String,
-    showModal: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-  },
   data() {
     return {
-      snackbar: this.showModal,
+      snackbar: false,
+      message: "",
     };
+  },
+  mounted() {
+    const { message } = this.$route.query;
+    if (message === "noUser") {
+      this.message = "Enter name";
+    } else if (message === "leftChat") {
+      this.message = "You left chat room";
+    }
+    this.snackbar = !!this.message;
   },
   methods: {
     hideModal() {

@@ -63,7 +63,7 @@ export default {
   right: 0;
   padding: 1rem;
   height: 80px;
-  background: #212121;
+  background: accent;
 }
 
 .c-chat {
