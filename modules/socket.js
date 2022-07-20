@@ -1,4 +1,3 @@
-import http from "http";
 import socketIO from "socket.io";
 import Users from "../utils/users";
 
@@ -6,20 +5,6 @@ export default function () {
   this.nuxt.hook("listen", (server, { host, port }) => {
     console.log(`ListentHook : Listening on http://${host}:${port}`);
     const io = socketIO(server);
-    // const server = http.createServer(this.nuxt.renderer.app);
-    // const io = new Server(server, {
-    //   cors: {
-    //     origin: process.env.HOST_URL || "localhost",
-    //   },
-    // });
-
-    // // overwrite nuxt.server.listen()
-    // server.listen(process.env.PORT || 3000);
-
-    // // close this server on 'close' event
-    // this.nuxt.hook("close", () => new Promise(server.close));
-
-    // server.setTimeout(500000);
 
     const m = (name, text, id, time) => ({ name, text, id, time });
     const users = Users();
