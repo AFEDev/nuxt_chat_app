@@ -1,16 +1,26 @@
 import http from "http";
-import socketIO from "socket.io";
+import { Server } from "socket.io";
 import Users from "../utils/users";
 
 export default function () {
   this.nuxt.hook("render:before", () => {
     const server = http.createServer(this.nuxt.renderer.app);
-    const io = socketIO(server);
+    const io = new Server(server, {
+      cors: {
+        origin: process.env.HOST_URL || "localhost",
+        methods: ["GET", "POST"],
+      },
+    });
 
+    // overwrite nuxt.server.listen()
     this.nuxt.server.listen = (port, host) =>
       new Promise((resolve) =>
         server.listen(port || 3000, host || "localhost", resolve)
       );
+    // close this server on 'close' event
+    this.nuxt.hook("close", () => new Promise(server.close));
+
+    server.setTimeout(500000);
 
     const m = (name, text, id, time) => ({ name, text, id, time });
     const users = Users();
@@ -39,6 +49,10 @@ export default function () {
         socket.broadcast
           .to(data.room)
           .emit("newMessage", m("admin", `${data.name} connected to chat.`));
+      });
+
+      socket.on("connect_error", (err) => {
+        console.log(`connect_error due to ${err.message}`);
       });
 
       socket.on("createMessage", (data, cb) => {
@@ -78,5 +92,6 @@ export default function () {
         }
       });
     });
+    io.listen(process.env.PORT || 3000);
   });
 }
