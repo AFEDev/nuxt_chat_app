@@ -1,9 +1,11 @@
-### Awesome UI from late 90's and incredible UX - safest and maximum anonymus chat- no registration, database or even localStorage :) 
-
-### This is my firs project with Nuxt and last one with Nuxt wersion 2.xx :) Also my first project with socket.io :) 
-
-
 # Chat app
+
+### `Awesome UI from late 90's and incredible UX - safest and maximum anonymus chat- no registration, database or even localStorage :) `
+
+### `This is my firs project with Nuxt and last one with Nuxt wersion 2.xx :) Also my first project with socket.io :) `
+
+
+
 
 ## Build Setup
 
