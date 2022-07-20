@@ -25,6 +25,7 @@
               <v-checkbox
                 v-model="checkbox"
                 label="Generate random room"
+                disabled
               ></v-checkbox>
 
               <v-btn
